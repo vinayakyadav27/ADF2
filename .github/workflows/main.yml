@@ -4,10 +4,10 @@
 # For more samples to get started with GitHub Action workflows to deploy to Azure: https://github.com/Azure/actions-workflow-samples
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - adf_publish
-  workflow_dispatch:
 
 
 jobs:
@@ -17,17 +17,24 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
-    # - name: Azure Login
-    #   uses: Azure/login@v1.4.3
-    #   with:
-    #     # Paste output of `az ad sp create-for-rbac` as value of secret variable: AZURE_CREDENTIALS
-    #     creds: ${{secrets.AZURE_CREDENTIALS}}
+   
     
     - name: Azure Login
       uses: Azure/login@v2.0.0
       with:
         creds: ${{secrets.AZURE_CREDENTIALS}}
         
+    - name: Azure PowerShell Action
+      uses: Azure/powershell@v1
+      with:
+        # Specify the Az PowerShell script here.
+        inlineScript:
+          $triggersADF = Get-AzDataFactoryV2Trigger -DataFactoryName  "prod-demo-adf"-ResourceGroupName "vinayak-rg"
+          $triggersADF | ForEach-Object { Stop-AzDataFactoryV2Trigger -ResourceGroupName vinayak-rg -DataFactoryName prod-demo-adf -Name $_.name -Force }
+      # Azure PS version to be used to execute the script, example: 1.8.0, 2.8.0, 3.4.0. To use the latest version, specify "latest".
+        azPSVersion: latest
+    
+    
     - name: Deploy Azure Resource Manager (ARM) Template
       uses: Azure/arm-deploy@v1.0.6
       with:
