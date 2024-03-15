@@ -1,0 +1,9 @@
+{
+	"name": "devl-demo-adf",
+	"location": "eastus",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "b47a9e8f-d767-45a5-9a30-8c28a681d277",
+		"tenantId": "e4e34038-ea1f-4882-b6e8-ccd776459ca0"
+	}
+}
