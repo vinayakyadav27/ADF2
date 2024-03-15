@@ -30,8 +30,7 @@ jobs:
       uses: Azure/powershell@v1
       with:
         # Specify the Az PowerShell script here.
-        inlineScript: $triggersADF = Get-AzDataFactoryV2Trigger -DataFactoryName  "prod-demo-adf"-ResourceGroupName "vinayak-rg"
-          $triggersADF | ForEach-Object { Stop-AzDataFactoryV2Trigger -ResourceGroupName vinayak-rg -DataFactoryName prod-demo-adf -Name $_.name -Force }
+        inlineScript: ./devl-demo-adf/PrePostDeploymentScript.Ver2.ps1 -armTemplate "./ARMTemplateForFactory.json" -ResourceGroupName vinayak-rg -DataFactoryName prod-demo-adf -predeployment $true -deleteDeployment $false
           
       # Azure PS version to be used to execute the script, example: 1.8.0, 2.8.0, 3.4.0. To use the latest version, specify "latest".
         azPSVersion: latest
